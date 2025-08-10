@@ -104,18 +104,20 @@ export function useFormularioItem({
         break;
 
       case "dataValidade":
-        if (dadosFormulario.perecivel && !valor) {
-          novosErros.dataValidade =
-            "Data de validade é obrigatória para produtos perecíveis";
-        } else if (valor) {
-          const hoje = new Date();
-          hoje.setHours(0, 0, 0, 0);
-          const dataValidade = new Date(valor);
-          if (dataValidade < hoje) {
+        if (dadosFormulario.perecivel) {
+          if (!valor) {
             novosErros.dataValidade =
-              "Produto vencido - data de validade inferior à data atual";
+              "Data de validade é obrigatória para produtos perecíveis";
           } else {
-            delete novosErros.dataValidade;
+            const hoje = new Date();
+            hoje.setHours(0, 0, 0, 0);
+            const dataValidade = new Date(valor);
+            if (dataValidade < hoje) {
+              novosErros.dataValidade =
+                "Produto vencido - data de validade inferior à data atual";
+            } else {
+              delete novosErros.dataValidade;
+            }
           }
         } else {
           delete novosErros.dataValidade;
@@ -158,34 +160,43 @@ export function useFormularioItem({
     return Object.keys(novosErros).length === 0;
   };
 
-  const lidarComMudanca = (e) => {
-    const { name, value, type, checked } = e.target;
-    const novoValor = type === "checkbox" ? checked : value;
+  const lidarComMudanca = (evento) => {
+    const {
+      name: nomeCampo,
+      value: valorCampo,
+      type: tipoCampo,
+      checked: marcado,
+    } = evento.target;
+    const novoValor = tipoCampo === "checkbox" ? marcado : valorCampo;
 
     setDadosFormulario((prev) => ({
       ...prev,
-      [name]: novoValor,
+      [nomeCampo]: novoValor,
     }));
 
-    if (tocado[name]) {
-      validarCampo(name, novoValor);
+    if (tocado[nomeCampo]) {
+      validarCampo(nomeCampo, novoValor);
     }
 
-    if (name === "perecivel" && !novoValor) {
+    if (nomeCampo === "perecivel" && !novoValor) {
       setDadosFormulario((prev) => ({ ...prev, dataValidade: "" }));
-      setErros((prev) => ({ ...prev, dataValidade: undefined }));
+      setErros((prev) => {
+        const novoErro = { ...prev };
+        delete novoErro.dataValidade;
+        return novoErro;
+      });
     }
 
-    if (name === "unidadeMedida") {
+    if (nomeCampo === "unidadeMedida") {
       setDadosFormulario((prev) => ({ ...prev, quantidade: "" }));
       setErros((prev) => ({ ...prev, quantidade: undefined }));
     }
   };
 
-  const lidarComBlur = (e) => {
-    const { name, value } = e.target;
-    setTocado((prev) => ({ ...prev, [name]: true }));
-    validarCampo(name, value);
+  const lidarComBlur = (evento) => {
+    const { name: nomeCampo, value: valorCampo } = evento.target;
+    setTocado((prev) => ({ ...prev, [nomeCampo]: true }));
+    validarCampo(nomeCampo, valorCampo);
   };
 
   const validarFormulario = () => {
@@ -211,8 +222,8 @@ export function useFormularioItem({
     return estaValido;
   };
 
-  const lidarComEnvio = (e) => {
-    e.preventDefault();
+  const lidarComEnvio = (evento) => {
+    evento.preventDefault();
     if (!validarFormulario()) return;
 
     let quantidadeFormatada = null;
@@ -251,8 +262,8 @@ export function useFormularioItem({
     }
   };
 
-  const lidarComMudancaPreco = (e) => {
-    const numeros = e.target.value.replace(/\D/g, "");
+  const lidarComMudancaPreco = (evento) => {
+    const numeros = evento.target.value.replace(/\D/g, "");
     setPrecoRaw(numeros);
 
     const valorNumerico = numeros ? (Number(numeros) / 100).toFixed(2) : "";
