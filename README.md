@@ -8,6 +8,11 @@
 
 ## Instalação
 
+## Pré-requisitos
+
+- Ter o [Node.js](https://nodejs.org/) instalado (recomendo a versão 16 ou superior).  
+- Ter o Git instalado para clonar o repositório (ou baixar o ZIP direto do GitHub).
+
 1. Abra o terminal (Prompt de Comando, PowerShell, Terminal, etc) no seu computador. 
 
 2. Clone este repositório:
