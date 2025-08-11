@@ -190,7 +190,7 @@ const ListaItens = () => {
                       <FiEdit2 size={20} />
                     </Link>
                     <button
-                      onClick={() => lidarComExclusao(item)} // Passa o item inteiro aqui
+                      onClick={() => lidarComExclusao(item)}
                       className="text-red-600 hover:text-red-800 transition p-2 rounded-md bg-red-100 hover:bg-red-200"
                       title={`Excluir ${item.nome}`}
                       aria-label={`Excluir ${item.nome}`}
@@ -267,3 +267,4 @@ const ListaItens = () => {
 };
 
 export default ListaItens;
+
