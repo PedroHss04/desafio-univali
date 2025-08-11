@@ -34,4 +34,4 @@
    npm run dev
    ```
 
-   Acesse a aplicação em [http://localhost:5173](http://localhost:5173)
+   Acesse a aplicação em [http://localhost:3000](http://localhost:3000)
