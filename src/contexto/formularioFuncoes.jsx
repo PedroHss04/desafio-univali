@@ -31,7 +31,7 @@ export function useFormularioItem({
           unidadeMedida: item.unidadeMedida || "",
           quantidade:
             item.quantidade !== undefined && item.quantidade !== null
-              ? item.quantidade.toString().replace(".", ",")
+              ? item.quantidade.toString()
               : "",
           preco:
             item.preco !== undefined && item.preco !== null
@@ -297,3 +297,4 @@ export function useFormularioItem({
     lidarComMudancaPreco,
   };
 }
+
