@@ -96,10 +96,16 @@ export function useFormularioItem({
       case "preco":
         if (!valor) {
           novosErros.preco = "Preço é obrigatório";
-        } else if (!/^\d{1,3}(?:\.\d{3})*(?:[.,]\d{1,2})?$/.test(valor)) {
-          novosErros.preco = "Preço deve ter no máximo 2 casas decimais";
         } else {
-          delete novosErros.preco;
+          const precoLimpo = valor.replace(/\s/g, "").trim();
+          const regexPreco = /^\d{1,3}(\.\d{3})*(,\d{1,2})?$|^\d+(,\d{1,2})?$/;
+
+          if (!regexPreco.test(precoLimpo)) {
+            novosErros.preco =
+              "Preço deve estar no formato correto, ex: 1.234,56";
+          } else {
+            delete novosErros.preco;
+          }
         }
         break;
 
@@ -297,4 +303,5 @@ export function useFormularioItem({
     lidarComMudancaPreco,
   };
 }
+
 
