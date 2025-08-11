@@ -50,6 +50,7 @@ const FormularioItem = () => {
               value={dadosFormulario.nome}
               onChange={lidarComMudanca}
               onBlur={lidarComBlur}
+              maxLength={50}
               placeholder="Digite o nome do item"
               className={`block w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 shadow-sm placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-600 sm:text-sm transition ${
                 erros.nome
@@ -260,3 +261,4 @@ const FormularioItem = () => {
 };
 
 export default FormularioItem;
+
