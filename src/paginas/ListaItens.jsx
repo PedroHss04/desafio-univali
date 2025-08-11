@@ -16,13 +16,14 @@ const ListaItens = () => {
   const [confirmarApagarTodos, setConfirmarApagarTodos] = useState(false);
   const navegar = useNavigate();
 
-  const lidarComExclusao = (id) => {
-    setItemParaExcluir(id);
+  // Agora guarda o item completo para mostrar o nome no modal
+  const lidarComExclusao = (item) => {
+    setItemParaExcluir(item);
   };
 
   const confirmarExclusao = async () => {
     if (itemParaExcluir) {
-      await excluirItem(itemParaExcluir);
+      await excluirItem(itemParaExcluir.id);
       mostrarNotificacao("Item excluído com sucesso!", "sucesso");
       setItemParaExcluir(null);
       navegar("/itens");
@@ -189,7 +190,7 @@ const ListaItens = () => {
                       <FiEdit2 size={20} />
                     </Link>
                     <button
-                      onClick={() => lidarComExclusao(item.id)}
+                      onClick={() => lidarComExclusao(item)} // Passa o item inteiro aqui
                       className="text-red-600 hover:text-red-800 transition p-2 rounded-md bg-red-100 hover:bg-red-200"
                       title={`Excluir ${item.nome}`}
                       aria-label={`Excluir ${item.nome}`}
@@ -212,7 +213,8 @@ const ListaItens = () => {
               Confirmar Exclusão
             </h2>
             <p className="text-gray-700 mb-6">
-              Tem certeza de que deseja excluir este item?
+              Tem certeza de que deseja excluir o item{" "}
+              <strong>{itemParaExcluir.nome}</strong>?
             </p>
             <div className="flex justify-end space-x-4">
               <button
